@@ -107,6 +107,23 @@ def tptn(umbral, img_array, gtim):
 
     return sensitivity, specificity
 
+def ROC_value(TopHat, gt_array):
+
+    sensitivity = np.zeros(255)
+    specificity = np.zeros(255)
+
+    for i in range(0, 255):
+        sen, spe = tptn(i, TopHat, gt_array)
+        sensitivity[i] = sen
+        specificity[i] = spe
+
+    # Calculamos 1 - especificidad
+    one_minus_spe = 1 - specificity
+    umbrales = np.arange(0, len(specificity))
+
+    auc_score = auc(one_minus_spe, sensitivity)
+
+    return auc_score
 
 
 def curva_roc(sen, spe):
@@ -127,6 +144,7 @@ def curva_roc(sen, spe):
     # Calculamos 1 - especificidad
     one_minus_spe = 1 - spe
     umbrales = np.arange(0, len(sen))
+
 
     # Crear el gráfico de la curva ROC
     fig = go.Figure()
@@ -172,3 +190,4 @@ def curva_roc(sen, spe):
     print(f"El área bajo la curva ROC (AUC) es: {auc_score}")
 
     fig.show()
+    
