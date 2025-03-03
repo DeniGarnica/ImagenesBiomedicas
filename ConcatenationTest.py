@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import cv2
 import TopHat as th
-import otsu as ot
+import Binarizacion as ot
 import ComponentesConexos as cc
 
 def concatenate_images_from_folder(folder_path, axis=1):
@@ -146,7 +146,7 @@ def process_and_save_images_binar(input_folder, output_folder):
 
 
 
-def process_and_save_images_conected(input_folder, output_folder):
+def process_and_save_images_conected(input_folder, output_folder, min_size=25):
     '''
     Aplica la función de componentes conexos a todas las imágenes en `input_folder`,
     y guarda los resultados en `output_folder`.
@@ -176,7 +176,7 @@ def process_and_save_images_conected(input_folder, output_folder):
 
 
         # Aplicar la función
-        resultado = cc.Conectivity(original)
+        resultado = cc.Conectivity(original, min_size=min_size)
 
         # Verificar que resultado sea un array válido
         if not isinstance(resultado, np.ndarray):
